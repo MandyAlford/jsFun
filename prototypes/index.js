@@ -24,10 +24,15 @@ const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 // DATASET: kitties from ./datasets/kitties
 const kittyPrompts = {
   orangeKittyNames() {
-
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const kittyArray = kitties.filter(function(kitty) {
+      return kitty.color === 'orange';
+    });
+    const result = kittyArray.map(function(kitty) {
+      return kitty.name;
+    });
+
     return result;
 
     // Annotation:
@@ -37,7 +42,9 @@ const kittyPrompts = {
   sortByAge() {
     // Sort the kitties by their age
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort(function(a, b) {
+      return b.age - a.age;
+    });
     return result;
 
     // Annotation:
@@ -58,7 +65,10 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // const result = kitties.map(function(kitty) {
+    //   kitty.age += 2;
+    //   return kitty
+    // })
     return result;
   }
 };
@@ -81,17 +91,20 @@ const kittyPrompts = {
 
 // DATASET: clubs from ./datasets/clubs
 const clubPrompts = {
-  membersBelongingToClubs() {
-    // Create an object whose keys are the names of people, and whose values are
-    // arrays that include the names of the clubs that person is a part of. e.g.
-    // {
-    //   Louisa: ['Drama', 'Art'],
-    //   Pam: ['Drama', 'Art', 'Chess'],
-    //   ...etc
-    // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+  membersBelongingToClubs(clubObj) {
+    let result = {};
+    clubs.forEach(function(club) {
+      club.members.forEach(function(member) {
+        if(result[member]){
+          result[member].push(club.club);
+        } else {
+          result[member] = [club.club];
+        }
+      });
+    });
     return result;
+    // const result =
+    // return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -117,16 +130,15 @@ const clubPrompts = {
 // DATASET: mods from ./datasets/mods
 const modPrompts = {
   studentsPerMod() {
-    // Return an array of objects where the keys are mod (the number of the module)
-    // and studentsPerInstructor (how many students per instructor there are for that mod) e.g.
-    // [
-    //   { mod: 1, studentsPerInstructor: 9 },
-    //   { mod: 2, studentsPerInstructor: 11 },
-    //   { mod: 3, studentsPerInstructor: 10 },
-    //   { mod: 4, studentsPerInstructor: 8 }
-    // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // function(){}
+
+    const result = mods.map((module) => {
+      return {
+        mod: module.mod,
+        studentsPerInstructor:(module.students / module.instructors)
+      };
+    });
     return result;
 
     // Annotation:
@@ -161,7 +173,12 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.map((cakeObj) => {
+      return {
+        flavor: cakeObj.cakeFlavor,
+        inStock: cakeObj.inStock,
+      };
+    });
     return result;
 
     // Annotation:
@@ -189,7 +206,9 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter((cakeObj) => {
+      return cakeObj.inStock > 0;
+    });
     return result;
 
     // Annotation:
@@ -200,7 +219,9 @@ const cakePrompts = {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cakeObj) => {
+      return acc + cakeObj.inStock;
+    },0);
     return result;
 
     // Annotation:
@@ -208,14 +229,47 @@ const cakePrompts = {
   },
 
   allToppings() {
-    // Return an array of all unique toppings (no duplicates) needed to bake
-    // every cake in the dataset e.g.
-    // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
+    const result = cakes.reduce((acc, cakeObj) => {
+      cakeObj.toppings.forEach((topping) => {
+        acc[topping] = 0;
+      });
+      return acc;
+    },{});
+    return Object.keys(result);
+    // let result = [];
+    // let toppings = cakes.reduce((acc, cakeObj) => {
+    //  acc.push(...cakeObj.toppings);
+    //   console.log(acc);
+    //   return acc;
+    // },[]);
+    // toppings.forEach((topping) => {
+    //   if(!result.includes(topping)) {
+    //     result.push(topping);
+    //   };
+    // });
+    // return result;
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+
+    // return result.push(...cakeObj.toppings);
+    // });
+    //  () => {
+    //   let toppings = [];
+    //   cakes.forEach((cakeObj) => {
+    //     toppings.push(cakeObject.toppings);
+    //   });
+    //   return toppings;
+    // };
+    // function(){
+    //   let toppings = [];
+    //   cakes.forEach((cakeObj) => {
+    //     console.log(cakeObj.toppings); toppings.push(...cakeObj.toppings);
+    //   });
+    //   return toppings;
+    // };
+
 
     // Annotation:
+
     // Write your annotation here as a comment
   },
 
@@ -230,7 +284,16 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+      cake.toppings.forEach((topping) => {
+        if(acc[topping]) {
+          acc[topping] += 1;
+        } else {
+          acc[topping] = 1;
+        }
+      });
+      return acc;
+    } ,{});
     return result;
 
     // Annotation:
@@ -265,7 +328,9 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter((classroom) => {
+      return classroom.program === 'FE';
+    });
     return result;
 
     // Annotation:
@@ -273,14 +338,16 @@ const classPrompts = {
   },
 
   totalCapacities() {
-    // Create an object where the keys are 'feCapacity' and 'beCapacity',
-    // and the values are the total capacity for all classrooms in each program e.g.
-    // {
-    //   feCapacity: 110,
-    //   beCapacity: 96
-    // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+    const result = classrooms.reduce(function(acc, classroom) {
+      if(classroom.program === 'FE') {
+        acc.feCapacity += classroom.capacity;
+      } else {
+        acc.beCapacity += classroom.capacity;
+      }
+      return acc;
+    }, {feCapacity: 0, beCapacity: 0});
     return result;
 
     // Annotation:
@@ -290,7 +357,9 @@ const classPrompts = {
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((classroomA, classroomB) => {
+      return classroomA.capacity - classroomB.capacity;
+    });
     return result;
 
     // Annotation:
@@ -317,7 +386,12 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.filter((book) => {
+      return (book.genre !== 'Horror' && book.genre !== 'True Crime');
+    }).map((book) => {
+      return book.title;
+    });
+
     return result;
 
     // Annotation:
@@ -332,7 +406,17 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.reduce((acc, book) => {
+      let filteredBook = {};
+      let title = book.title;
+      let year = book.published;
+      if(year >= 1990) {
+        filteredBook.title = title;
+        filteredBook.year = year;
+        acc.push(filteredBook);
+      }
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
