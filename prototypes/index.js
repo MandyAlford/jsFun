@@ -439,7 +439,10 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((acc, city) => {
+      acc.push((city.temperature.high + city.temperature.low) / 2);
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
@@ -453,7 +456,12 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((acc, city) => {
+      if(city.type.includes('sunny')) {
+        acc.push(`${city.location} is ${city.type}.`);
+      }
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
@@ -469,7 +477,9 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((acc, city) => {
+      console.log(Math.max(city.humidity));
+    }, {});
     return result;
 
     // Annotation:
