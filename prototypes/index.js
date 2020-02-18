@@ -478,8 +478,11 @@ const weatherPrompts = {
     // }
 
     const result = weather.reduce((acc, city) => {
-      console.log(Math.max(city.humidity));
-    }, {});
+      if(city.humidity > acc.humidity) {
+        acc = city;
+      }
+      return acc;
+    }, {humidity: 0});
     return result;
 
     // Annotation:
@@ -506,11 +509,24 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+    const result = nationalParks.reduce((acc, park) => {
+      if(park.visited === true) {
+        acc.parksVisited.push(park.name);
+      } else {
+        acc.parksToVisit.push(park.name);
+      }
+      return acc;
+    }, {
+      parksToVisit: [],
+      parksVisited: [],
+    });
+    console.log(result);
     return result;
 
     // Annotation:
     // Write your annotation here as a comment
+
   },
 
   getParkInEachState() {
@@ -523,7 +539,9 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.map((park) => {
+      return {[park.location]: park.name};
+    });
     return result;
 
     // Annotation:
@@ -546,8 +564,19 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((acc, park) => {
+      park.activities.forEach((activity) => {
+        if(!acc.includes(activity)) {
+          acc.push(activity);
+        }
+      });
+      return acc;
+    }, []);
     return result;
+    // loop over each park
+    // pull out each acticvity
+    // put each activity in array
+    // remove any duplicates
 
     // Annotation:
     // Write your annotation here as a comment
@@ -589,8 +618,11 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.map((brewery) => {
+      return {name: brewery.name, beerCount: brewery.beers.length };
+    });
     return result;
+
 
     // Annotation:
     // Write your annotation here as a comment
