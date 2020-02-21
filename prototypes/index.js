@@ -602,7 +602,10 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((acc, brewery) => {
+      acc += brewery.beers.length;
+      return acc;
+    }, 0);
     return result;
 
     // Annotation:
@@ -633,7 +636,16 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result =  breweries.reduce((acc, brewery) => {
+      brewery.beers.forEach((beer) => {
+        if(beer.abv > acc.abv) {
+          acc = beer;
+        }
+      });
+      return acc;
+    }, {
+      abv: 0
+    });
     return result;
 
     // Annotation:
@@ -681,7 +693,15 @@ const turingPrompts = {
     //  { name: 'Robbie', studentCount: 18 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.map((instructor) => {
+      const count = cohorts.find((cohort) => {
+        return cohort.module === instructor.module;
+      }).studentCount;
+      return {
+        name: instructor.name,
+        studentCount: count
+      };
+    });
     return result;
 
     // Annotation:
@@ -695,7 +715,10 @@ const turingPrompts = {
     // cohort1804: 10.5
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cohorts.map((cohort) =>
+    let count = instructors.filter(())
+      console.log({name: cohort.cohort})
+    })
     return result;
 
     // Annotation:
@@ -717,7 +740,9 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.map((instuctor) => {
+      console.log({name: instructor.name});
+    })
     return result;
 
     // Annotation:
