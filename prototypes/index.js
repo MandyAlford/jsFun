@@ -715,10 +715,13 @@ const turingPrompts = {
     // cohort1804: 10.5
     // }
 
-    const result = cohorts.map((cohort) =>
-    let count = instructors.filter(())
-      console.log({name: cohort.cohort})
-    })
+    const result =   cohorts.reduce((acc, cohort) => {
+      let teachers = instructors.filter((instructor) => {
+        return instructor.module === cohort.module;
+      });
+      acc[`cohort${cohort.cohort}`] = (cohort.studentCount / teachers.length);
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
@@ -740,9 +743,21 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const result = instructors.map((instuctor) => {
-      console.log({name: instructor.name});
-    })
+    const result = instructors.reduce((acc, instructor) => {
+      let modules = [];
+      instructor.teaches.forEach((subject) => {
+        cohorts.forEach((cohort) => {
+          cohort.curriculum.forEach((topic) => {
+            if(topic === subject && !modules.includes(cohort.module)) {
+              modules.push(cohort.module);
+            }
+          });
+        });
+      });
+      modules.sort();
+      acc[instructor.name] = modules;
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
@@ -759,7 +774,15 @@ const turingPrompts = {
     //   recursion: [ 'Pam', 'Leta' ]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((acc, instructor) => {
+      instructor.teaches.forEach((subject) => {
+        if(!acc[subject]) {
+          acc[subject] = [];
+        }
+        acc[subject].push(instructor.name);
+      });
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
