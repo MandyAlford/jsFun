@@ -816,8 +816,18 @@ const bossPrompts = {
     //   { bossName: 'Ursula', sidekickLoyalty: 20 },
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
+    let bossArray = Object.keys(bosses);
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = bossArray.map((boss) => {
+
+      let loyalty = sidekicks.reduce((acc, sidekick) => {
+        if(sidekick.boss === bosses[boss].name) {
+          acc += sidekick.loyaltyToBoss;
+        }
+        return acc;
+      }, 0);
+      return {bossName: bosses[boss].name, sidekickLoyalty: loyalty};
+    });
     return result;
 
     // Annotation:
@@ -858,8 +868,17 @@ const astronomyPrompts = {
     //     lightYearsFromEarth: 640,
     //     color: 'red' }
     // ]
+    let constellationArray = Object.keys(constellations);
+    let starArray = [];
+    constellationArray.forEach((constellation) => {
+      constellations[constellation].stars.forEach((star) => {
+        starArray.push(star);
+      });
+    });
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.filter((star) => {
+      return starArray.includes(star.name);
+    });
     return result;
 
     // Annotation:
