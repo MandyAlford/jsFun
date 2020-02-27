@@ -830,8 +830,6 @@ const bossPrompts = {
     });
     return result;
 
-    // Annotation:
-    // Write your annotation here as a comment
   }
 };
 
@@ -896,7 +894,14 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.reduce((acc, star) => {
+      let key = star.color;
+      if(!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(star);
+      return acc;
+    }, {});
     return result;
 
     // Annotation:

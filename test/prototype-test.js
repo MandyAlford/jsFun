@@ -440,7 +440,7 @@ describe("PROTOTYPES", () => {
       }])
     })
   }), describe("Astronomy Prompts", () => {
-    it.only("starsInConstellations", () => {
+    it("starsInConstellations", () => {
       const e = astronomyPrompts.starsInConstellations();
       expect(e).to.deep.equal([{
         name: 'Rigel',
@@ -454,7 +454,8 @@ describe("PROTOTYPES", () => {
         lightYearsFromEarth: 640,
         color: 'red'
       }])
-    }), it("starsByColor", () => {
+    }), it.only
+    ("starsByColor", () => {
       const e = astronomyPrompts.starsByColor();
       expect(e).to.deep.equal({
         blue: [{
